@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crispy IA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="stm/Kentang goreng.css">
+</head>
+<style>
+    img {
+        display: block;
+        margin-top: 40px;
+        margin-left: 40px;
+    }
+</style>
+<script>
+document.addEventListener("scroll", function() {
+    let cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        let top = card.getBoundingClientRect().top;
+        if (top < window.innerHeight - 50) {
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+        }
+    });
+});
+</script>
+<body>
+     <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-lightning-charge-fill"></i>Crispy IA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="galeri.html">Galeri</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang-kami.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="produk.html">Produk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section id="beranda" class="hero-section">
+            <div class="container h-880">
+                <div class="row h-80 align-items-center">
+                        <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">Selamat Datang di Website Kami <span class="text-warning">Kentang Goreng Crispy</span> Tiada Duanya!</h1>
+                        <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">Kami menyediakan kentang goreng crispy yang rasakan gurih dan renyahnya kentang pilihan dengan bumbu rahasia kami. Satu gigitan, bikin ketagihan!</p>
+                        <a href="produk.html" class="btn btn-warning btn-lg fw-bold animate__animated animate__fadeInUp animate__delay-2s">
+                            <i class="bi bi-basket-fill"></i> Lihat Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+            <ul class="fitur-list">
+                <li>✅ Produk 100% Homemade</li>
+                <li>✅ Bahan Alami & Segar</li>
+                <li>✅ Pengiriman Cepat</li>
+            </ul>
+        </div>
+    </section>
+    <section class="testimoni">
+        <div class="container">
+            <h2>Testimoni Pelanggan</h2>
+            <div class="card">
+                <p>"Rasanya enak dan pengiriman cepat!"</p>
+                <small>— Hans, Pemalang</small>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Crispy IA. Semua hak cipta dilindungi.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="file.js/script.js"></script>
+</body>
+</html>

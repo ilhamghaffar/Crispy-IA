@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Crispy IA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="stm/Kentang goreng.css">
+</head>
+<style>
+    /* Styling for map and contact icons */
+    .icon-box {
+        min-width: 50px; /* Memastikan ikon tidak bergeser */
+    }
+    .map-responsive iframe {
+        width: 100%; 
+        height: 300px;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); 
+    }
+</style>
+
+
+<body>
+     <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="kontak.html">
+                <i class="bi bi-lightning-charge-fill"></i>Crispy IA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="galeri.html">Galeri</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang-kami.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="produk.html">Produk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section id="kontak" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Hubungi Kami</h2>
+                <p class="lead">Punya pertanyaan atau mau pesan besar? Langsung hubungi kami aja!</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="contact-item d-flex mb-4">
+                        <div class="icon-box bg-warning text-white rounded-circle p-3 me-3">
+                            <i class="bi bi-geo-alt-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h5>Alamat</h5>
+                            <p>Jl. Cimanuk Kebondalem No. 88, Pemalang , Jawa Tengah</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item d-flex mb-4">
+                        <div class="icon-box bg-warning text-white rounded-circle p-3 me-3">
+                            <i class="bi bi-whatsapp fs-4"></i>
+                        </div>
+                        <div>
+                            <h5>WhatsApp</h5>
+                            <a href="https://wa.me/6285802874905?text=Halo%20Crispy%20IA%2C%20saya%20ingin%20bertanya%2Fmemesan.%20[Nama%20Anda]" target="_blank" class="text-decoration-none text-dark">
+                                <p class="mb-0">+62 858-0287-4905</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item d-flex mb-4">
+                        <div class="icon-box bg-warning text-white rounded-circle p-3 me-3">
+                            <i class="bi bi-envelope-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h5>Email</h5>
+                            <p>ilhamghaffar916@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item d-flex mb-4">
+                        <div class="icon-box bg-warning text-white rounded-circle p-3 me-3">
+                            <i class="bi bi-instagram fs-4"></i>
+                        </div>
+                        <div>
+                            <h5>Instagram</h5>
+                            <a href="https://www.instagram.com/hammzqt" target="_blank" class="text-decoration-none text-dark">
+                                <p class="mb-0">Pemilik toko Crispy AI</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="map-responsive mt-4">
+                        <h5 class="mb-3">Lokasi Kami</h5>
+                        <iframe 
+                            src="https://maps.google.com/maps?q=Jl.+Cimanuk+Kebondalem+No.+88,+Pemalang+,+Jawa+Tengah&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" 
+                            height="300" 
+                            style="border:0; border-radius: 0.5rem;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+
+                </div>
+                <div class="col-lg-8">
+                    <form class="p-4 bg-light rounded-4 shadow">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="nama" class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="nama" required>
+                            </div>
+                            <span class="error" id="errorNama"></span><br><br>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <span class="error" id="errorEmail"></span><br>
+                            <div class="col-12">
+                                <label for="kategori">Kategori Pesan:</label><br>
+                                <select id="kategori" name="kategori">
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <option value="umum">Umum</option>
+                                    <option value="produk">Produk</option>
+                                    <option value="kerjasama">Kerja Sama</option>
+                                </select>
+                            </div>
+                             <span class="error" id="errorKategori"></span><br>
+                            <div class="col-12">
+                            <label for="jenis-kelamin" class="form-label">Jenis Kelamin:</label><br>
+                                <select id="jenis-kelamin" name="jenis-kelamin">
+                                    <option value="">-- Pilih Jenis Kelamin --</option>
+                                    <option value="laki-laki">Laki-Laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="pesan" class="form-label">Pesan</label>
+                                <textarea class="form-control" id="pesan" rows="4" required></textarea>
+                            </div>
+                            <span class="error" id="errorPesan"></span> <div>
+                                <input type="checkbox" id="langganan" name="langganan" value="ya">
+                                <label for="langganan">Saya ingin menerima newsletter</label><br><br>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-warning btn-lg fw-bold">
+                                    <i class="bi bi-send-fill"></i> Kirim Pesan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+    <footer>
+          <p>&copy; 2025 Crispy IA. Semua hak cipta dilindungi.</p>
+    </footer>
+
+    <script type="module" src="js/form.js"></script>
+    <script type="module" src="js/newlester.js"></script>
+    <script>
+        // Memastikan kode validasi yang Anda berikan sebelumnya berfungsi
+        document.addEventListener("DOMContentLoaded", function () {
+             const form = document.querySelector(".p-4 form"); // Ganti dengan selector form yang benar
+            
+            // Tambahkan ID ke form agar mudah diakses jika form.js tidak ada
+            if(form) form.id = "formKontak";
+
+            // Jika form tidak ditemukan, gunakan selector yang lebih spesifik
+            const actualForm = document.getElementById("formKontak") || document.querySelector(".p-4 form");
+
+            if(actualForm) {
+                actualForm.addEventListener("submit", function (event) {
+                    let valid = true;
+                    
+                    // --- Validasi Nama ---
+                    const nama = document.getElementById("nama");
+                    const errorNama = document.getElementById("errorNama");
+                    if (nama.value.trim() === "") {
+                        errorNama.textContent = "Nama wajib diisi.";
+                        valid = false;
+                    } else {
+                        errorNama.textContent = "";
+                    }
+
+                    // --- Validasi Email ---
+                    const email = document.getElementById("email");
+                    const errorEmail = document.getElementById("errorEmail");
+                    const emailPattern = /^[^ ]+@gmail\.com$/i;
+                    if (!emailPattern.test(email.value)) {
+                        errorEmail.textContent = "Email harus @gmail.com dan format benar.";
+                        valid = false;
+                    } else {
+                        errorEmail.textContent = "";
+                    }
+
+                    // --- Validasi Kategori ---
+                    const kategori = document.getElementById("kategori");
+                    const errorKategori = document.getElementById("errorKategori");
+                    if (kategori.value === "") {
+                        errorKategori.textContent = "Pilih salah satu kategori.";
+                        valid = false;
+                    } else {
+                        errorKategori.textContent = "";
+                    }
+                    
+                    // --- Validasi Pesan ---
+                    const pesan = document.getElementById("pesan");
+                    const errorPesan = document.getElementById("errorPesan");
+                    if (pesan.value.trim().length < 10) {
+                        errorPesan.textContent = "Pesan minimal 10 karakter.";
+                        valid = false;
+                    } else {
+                        errorPesan.textContent = "";
+                    }
+
+                    if (!valid) {
+                        event.preventDefault(); // Gagalkan submit jika tidak valid
+                    } else {
+                        // Jika validasi berhasil
+                        alert("Pesan berhasil dikirim!");
+                        actualForm.reset();
+                        event.preventDefault(); // Mencegah reload halaman setelah submit
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="file.js/script.js"></script>
+</body>
+
+</html>

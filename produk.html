@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crispy IA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stm/Kentang goreng.css" />
+    <style>
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1050;
+            overflow-y: auto;
+        }
+        
+        .cart-sidebar.show {
+            right: 0;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1040;
+            display: none;
+        }
+        
+        .cart-overlay.show {
+            display: block;
+        }
+        
+        .cart-item {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+        }
+        
+        .cart-footer {
+            padding: 15px;
+            border-top: 2px solid #eee;
+        }
+        
+        .close-cart {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .cart-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .empty-cart {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        /* Payment Modal Styles */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1060;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .payment-modal.show {
+            display: flex;
+        }
+        
+        .payment-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .payment-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .payment-body {
+            padding: 20px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-method:hover {
+            border-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+        
+        .payment-method.selected {
+            border-color: #0d6efd;
+            background-color: #e7f1ff;
+        }
+        
+        .payment-method-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            border-radius: 8px;
+        }
+        
+        .payment-method-details {
+            flex-grow: 1;
+        }
+        
+        .payment-method-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .payment-method-desc {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .payment-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .order-summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .order-summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 18px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .payment-details {
+            display: none;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .payment-details.show {
+            display: block;
+        }
+        
+        .copy-btn {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #0b5ed7;
+        }
+        
+        .copy-btn.copied {
+            background-color: #28a745;
+        }
+        
+        .payment-success {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .payment-success.show {
+            display: block;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 15px auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        
+        .qr-placeholder {
+            font-size: 14px;
+            color: #6c757d;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+     <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="produk.html">
+                <i class="bi bi-lightning-charge-fill"></i> Crispy IA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="galeri.html">Galeri</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang-kami.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="produk.html">Produk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-icon" id="cartIcon">
+                            <i class="bi bi-cart3"></i>
+                            <span class="cart-badge" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <h3>Produk Unggulan</h3>
+        <p>Berikut daftar produk Crispy IA yang kami sediakan:</p>
+        <ul>
+            <li>Kentang Goreng Crispy Original</li>
+            <li>Kentang Goreng Crispy Balado</li>
+            <li>Kentang Goreng Crispy Saus & Mayones</li>
+            <li>Kentang Goreng Crispy Keju</li>
+        </ul>
+        <table border="1" cellspacing="0" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Produk</th>
+                    <th>Ukuran</th>
+                    <th>Harga</th>
+                </tr>
+            </thead>
+            </tbody>
+            <tr>
+                <td>Kentang Goreng Original</td>
+                <td>250g</td>
+                <td>Rp 15.000</td>
+
+            </tr>
+            <tr>
+                <td>Kentang Goreng Balado</td>
+                <td>250g</td>
+                <td>Rp 18.000</td>
+
+            </tr>
+            <tr>
+                <td>Kentang Goreng saus&mayones</td>
+                <td>250g</td>
+                <td>Rp 20.000</td>
+
+            </tr>
+            <tr>
+                <td>Kentang Goreng Keju</td>
+                <td>250g</td>
+                <td>Rp 20.000</td>
+
+            </tr>
+            <td colspan="3" style="text-align: center; background-color: #eee;">
+                Semua harga sudah termasuk PPN
+            </td>
+            </tbody>
+        </table>
+</main>
+    <div class="cart-overlay" id="cartOverlay"></div>
+    
+    <div class="cart-sidebar" id="cartSidebar">
+        <button class="close-cart" id="closeCart">&times;</button>
+        <div class="cart-header">
+            <h4>Keranjang Belanja</h4>
+        </div>
+        <div id="cartItems" class="cart-items">
+            <div class="empty-cart">
+                <i class="bi bi-cart-x" style="font-size: 48px;"></i>
+                <p>Keranjang belanja Anda kosong</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="d-flex justify-content-between mb-3">
+                <h5>Total:</h5>
+                <h5 id="cartTotal">Rp 0</h5>
+            </div>
+            <button class="btn btn-primary w-100" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+    
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-content">
+            <div class="payment-header">
+                <h4>Pilih Metode Pembayaran</h4>
+                <button class="btn-close" id="closePaymentModal"></button>
+            </div>
+            <div class="payment-body">
+                <div class="order-summary">
+                    <h5 class="mb-3">Ringkasan Pesanan</h5>
+                    <div id="orderSummaryItems"></div>
+                    <div class="order-summary-total">
+                        <span>Total:</span>
+                        <span id="orderTotal">Rp 0</span>
+                    </div>
+                </div>
+                
+                <h5 class="mb-3">Metode Pembayaran</h5>
+                
+                <div class="payment-method" data-payment="dana">
+                    <div class="payment-method-icon" style="background-color: #0085FF; color: white;">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <div class="payment-method-details">
+                        <div class="payment-method-title">DANA</div>
+                        <div class="payment-method-desc">Pembayaran instan dengan DANA</div>
+                    </div>
+                </div>
+                
+                <div class="payment-method" data-payment="ovo">
+                    <div class="payment-method-icon" style="background-color: #6B46C1; color: white;">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <div class="payment-method-details">
+                        <div class="payment-method-title">OVO</div>
+                        <div class="payment-method-desc">Pembayaran instan dengan OVO</div>
+                    </div>
+                </div>
+                
+                <div class="payment-method" data-payment="gopay">
+                    <div class="payment-method-icon" style="background-color: #00AA13; color: white;">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <div class="payment-method-details">
+                        <div class="payment-method-title">GoPay</div>
+                        <div class="payment-method-desc">Pembayaran instan dengan GoPay</div>
+                    </div>
+                </div>
+                
+                <div class="payment-method" data-payment="bank">
+                    <div class="payment-method-icon" style="background-color: #FF6B35; color: white;">
+                        <i class="bi bi-bank"></i>
+                    </div>
+                    <div class="payment-method-details">
+                        <div class="payment-method-title">Transfer Bank</div>
+                        <div class="payment-method-desc">Transfer ke rekening bank kami</div>
+                    </div>
+                </div>
+                
+                <!-- DANA Payment Details -->
+                <div class="payment-details" id="dana-details">
+                    <h6>Detail Pembayaran DANA</h6>
+                    <div class="qr-code">
+                        <div class="qr-placeholder">
+                            <i class="bi bi-qr-code" style="font-size: 80px;"></i>
+                            <p>QR Code DANA</p>
+                        </div>
+                    </div>
+                    <p><strong>Nomor DANA:</strong> 0812-3456-7890 
+                        <button class="copy-btn" onclick="copyToClipboard('0812-3456-7890', this)">Salin</button>
+                    </p>
+                    <p><strong>Atas Nama:</strong> Crispy IA Store</p>
+                    <small class="text-muted">Scan QR code atau transfer ke nomor DANA di atas</small>
+                </div>
+                
+                <!-- OVO Payment Details -->
+                <div class="payment-details" id="ovo-details">
+                    <h6>Detail Pembayaran OVO</h6>
+                    <div class="qr-code">
+                        <div class="qr-placeholder">
+                            <i class="bi bi-qr-code" style="font-size: 80px;"></i>
+                            <p>QR Code OVO</p>
+                        </div>
+                    </div>
+                    <p><strong>Nomor OVO:</strong> 0812-9876-5432 
+                        <button class="copy-btn" onclick="copyToClipboard('0812-9876-5432', this)">Salin</button>
+                    </p>
+                    <p><strong>Atas Nama:</strong> Crispy IA Store</p>
+                    <small class="text-muted">Scan QR code atau transfer ke nomor OVO di atas</small>
+                </div>
+                
+                <!-- GoPay Payment Details -->
+                <div class="payment-details" id="gopay-details">
+                    <h6>Detail Pembayaran GoPay</h6>
+                    <div class="qr-code">
+                        <div class="qr-placeholder">
+                            <i class="bi bi-qr-code" style="font-size: 80px;"></i>
+                            <p>QR Code GoPay</p>
+                        </div>
+                    </div>
+                    <p><strong>Nomor GoPay:</strong> 0812-5555-7777 
+                        <button class="copy-btn" onclick="copyToClipboard('0812-5555-7777', this)">Salin</button>
+                    </p>
+                    <p><strong>Atas Nama:</strong> Crispy IA Store</p>
+                    <small class="text-muted">Scan QR code atau transfer ke nomor GoPay di atas</small>
+                </div>
+                
+                <!-- Bank Transfer Details -->
+                <div class="payment-details" id="bank-details">
+                    <h6>Detail Rekening Bank</h6>
+                    <p><strong>Bank:</strong> BCA</p>
+                    <p><strong>No. Rekening:</strong> 1234567890 
+                        <button class="copy-btn" onclick="copyToClipboard('1234567890', this)">Salin</button>
+                    </p>
+                    <p><strong>Atas Nama:</strong> PT Crispy IA Indonesia</p>
+                    <small class="text-muted">Mohon sertakan 3 digit terakhir nomor pemesanan Anda</small>
+                </div>
+            </div>
+            <div class="payment-footer">
+                <button class="btn btn-primary w-100" id="processPaymentBtn" disabled>Proses Pembayaran</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="pt-5">
+        <section class="py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="display-5 fw-bold">Pilih Varian Crispy-mu</h2>
+                    <p class="lead">Berbagai pilihan rasa untuk memuaskan seleramu.</p>
+                </div>
+                <div class="row g-4">
+                    <!-- Produk 1 -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card product-card h-100 border-0 shadow-sm">
+                            <img src="stm/Kentang Goreng biasa.jpeg" class="card-img-top" alt="Original">
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold">Kentang Goreng Crispy Original</h5>
+                                <p class="card-text">Rasa klasik yang gurih, sempurna untuk dinikmati dengan saus apa saja.</p>
+                                <h4 class="text-warning fw-bold">Rp 15K</h4>
+                                <button class="btn btn-primary mt-2 add-to-cart" data-id="1" data-name="Kentang Goreng Crispy Original" data-price="15000" data-image="stm/Kentang Goreng biasa.jpeg">Tambah ke Keranjang</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card product-card h-100 border-0 shadow-sm">
+                            <img src="stm/Kentang Goreng balado.jpeg" class="card-img-top" alt="Balado">
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold">Kentang Goreng Crispy Balado</h5>
+                                <p class="card-text">Kentang goreng renyah yang dilapisi bumbu balado pedas-gurih khas Indonesia, memberikan sensasi rasa yang kuat dan menggugah selera.</p>
+                                <h4 class="text-warning fw-bold">Rp 18K</h4>
+                                <button class="btn btn-primary mt-2 add-to-cart" data-id="2" data-name="Kentang Goreng Crispy Balado" data-price="18000" data-image="stm/Kentang Goreng balado.jpeg">Tambah ke Keranjang</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card product-card h-100 border-0 shadow-sm">
+                            <img src="stm/Kentang Goreng saus dan mayones.webp" class="card-img-top" alt="Saus & Mayones">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Kentang Goreng Crispy Saus & Mayones</h5>
+                                <p class="card-text">Kentang goreng crispy yang disajikan dengan kombinasi saus sambal dan mayones, menghasilkan perpaduan creamy, pedas, dan gurih dalam satu gigitan.</p>
+                                <h4 class="text-warning fw-bold">Rp 20K</h4>
+                                <button class="btn btn-primary mt-2 add-to-cart" data-id="3" data-name="Kentang Goreng Crispy Saus & Mayones" data-price="20000" data-image="stm/Kentang Goreng saus dan mayones.webp">Tambah ke Keranjang</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card product-card h-100 border-0 shadow-sm">
+                            <img src="stm/Kentang Goreng keju.jpeg" class="card-img-top" alt="Keju">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Kentang Goreng Crispy Keju</h5>
+                                <p class="card-text">Kentang goreng garing dengan taburan keju bubuk yang melimpah, memberikan rasa gurih dan creamy yang lezat.</p>
+                                <h4 class="text-warning fw-bold">Rp 20K</h4>
+                                <button class="btn btn-primary mt-2 add-to-cart" data-id="4" data-name="Kentang Goreng Crispy Keju" data-price="20000" data-image="stm/Kentang Goreng keju.jpeg">Tambah ke Keranjang</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h3>Rating Produk: <span id="hasil-rating"></span></h3>
+                <script>
+                    let rating = 4;
+                    if (rating >= 4.5) {
+                        document.getElementById("hasil-rating").textContent = "★★★★★ Sangat Disarankan";
+                    } else if (rating >= 3) {
+                        document.getElementById("hasil-rating").textContent = "★★★★ Rekomendasi Biasa";
+                    } else {
+                        document.getElementById("hasil-rating").textContent = "★ Tidak Direkomendasikan";
+                    }
+                </script>
+
+                <h3>Layanan Unggulan:</h3>
+                <ul id="layanan-list"></ul>
+                <script>
+                    let layanan = ["Gratis Ongkir", "Bayar di Tempat", "Garansi 30 Hari"];
+                    layanan.forEach(function (item) {
+                        let li = document.createElement("li");
+                        li.textContent = item;
+                        document.getElementById("layanan-list").appendChild(li);
+                    });
+                </script>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <p>&copy; 2025 Crispy IA. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Shopping Cart Functionality
+        let cart = [];
+        let selectedPaymentMethod = null;
+        
+        // DOM Elements
+        const cartIcon = document.getElementById('cartIcon');
+        const cartBadge = document.getElementById('cartBadge');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const closeCart = document.getElementById('closeCart');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        
+        // Payment Modal Elements
+        const paymentModal = document.getElementById('paymentModal');
+        const closePaymentModal = document.getElementById('closePaymentModal');
+        const processPaymentBtn = document.getElementById('processPaymentBtn');
+        const orderSummaryItems = document.getElementById('orderSummaryItems');
+        const orderTotal = document.getElementById('orderTotal');
+        
+        // Payment details elements
+        const danaDetails = document.getElementById('dana-details');
+        const ovoDetails = document.getElementById('ovo-details');
+        const gopayDetails = document.getElementById('gopay-details');
+        const bankDetails = document.getElementById('bank-details');
+        
+        // Event Listeners
+        cartIcon.addEventListener('click', openCart);
+        closeCart.addEventListener('click', closeCartSidebar);
+        cartOverlay.addEventListener('click', closeCartSidebar);
+        checkoutBtn.addEventListener('click', showPaymentModal);
+        closePaymentModal.addEventListener('click', hidePaymentModal);
+        processPaymentBtn.addEventListener('click', processPayment);
+        
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // Remove previous selection
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('selected');
+                });
+                
+                // Hide all payment details
+                document.querySelectorAll('.payment-details').forEach(detail => {
+                    detail.classList.remove('show');
+                });
+                
+                // Add selection to clicked method
+                this.classList.add('selected');
+                selectedPaymentMethod = this.getAttribute('data-payment');
+                
+                // Show appropriate payment details
+                const detailsElement = document.getElementById(selectedPaymentMethod + '-details');
+                if (detailsElement) {
+                    detailsElement.classList.add('show');
+                }
+                
+                // Enable payment button
+                processPaymentBtn.disabled = false;
+            });
+        });
+        
+        // Add to cart buttons
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const price = parseInt(this.getAttribute('data-price'));
+                const image = this.getAttribute('data-image');
+                
+                addToCart(id, name, price, image);
+                
+                // Visual feedback
+                this.textContent = 'Ditambahkan!';
+                this.classList.remove('btn-primary');
+                this.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    this.textContent = 'Tambah ke Keranjang';
+                    this.classList.remove('btn-success');
+                    this.classList.add('btn-primary');
+                }, 1500);
+            });
+        });
+        
+        function addToCart(id, name, price, image) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id,
+                    name,
+                    price,
+                    image,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+        }
+        
+        function updateCart() {
+            // Update cart badge
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartBadge.textContent = totalItems;
+            
+            // Update cart items
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="bi bi-cart-x" style="font-size: 48px;"></i>
+                        <p>Keranjang belanja Anda kosong</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-details">
+                            <h6>${item.name}</h6>
+                            <p>Rp ${item.price.toLocaleString('id-ID')}</p>
+                            <div class="cart-item-actions">
+                                <button class="quantity-btn decrease-quantity" data-id="${item.id}">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-id="${item.id}">
+                                <button class="quantity-btn increase-quantity" data-id="${item.id}">+</button>
+                                <button class="btn btn-sm btn-danger ms-3 remove-item" data-id="${item.id}">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Add event listeners to new buttons
+                document.querySelectorAll('.decrease-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        decreaseQuantity(id);
+                    });
+                });
+                
+                document.querySelectorAll('.increase-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        increaseQuantity(id);
+                    });
+                });
+                
+                document.querySelectorAll('.quantity-input').forEach(input => {
+                    input.addEventListener('change', function() {
+                        const id = this.getAttribute('data-id');
+                        const quantity = parseInt(this.value);
+                        updateQuantity(id, quantity);
+                    });
+                });
+                
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        removeFromCart(id);
+                    });
+                });
+            }
+            
+            // Update total
+            const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            cartTotal.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+        }
+        
+        function decreaseQuantity(id) {
+            const item = cart.find(item => item.id === id);
+            if (item && item.quantity > 1) {
+                item.quantity--;
+                updateCart();
+            }
+        }
+        
+        function increaseQuantity(id) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity++;
+                updateCart();
+            }
+        }
+        
+        function updateQuantity(id, quantity) {
+            const item = cart.find(item => item.id === id);
+            if (item && quantity > 0) {
+                item.quantity = quantity;
+                updateCart();
+            }
+        }
+        
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
+        }
+        
+        function openCart() {
+            cartSidebar.classList.add('show');
+            cartOverlay.classList.add('show');
+        }
+        
+        function closeCartSidebar() {
+            cartSidebar.classList.remove('show');
+            cartOverlay.classList.remove('show');
+        }
+        
+        function showPaymentModal() {
+            if (cart.length === 0) {
+                alert('Keranjang belanja Anda kosong!');
+                return;
+            }
+            
+            // Update order summary
+            const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            
+            orderSummaryItems.innerHTML = cart.map(item => `
+                <div class="order-summary-item">
+                    <span>${item.name} (x${item.quantity})</span>
+                    <span>Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</span>
+                </div>
+            `).join('');
+            
+            orderTotal.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+            
+            // Show modal
+            paymentModal.classList.add('show');
+        }
+        
+        function hidePaymentModal() {
+            paymentModal.classList.remove('show');
+            // Reset selection
+            document.querySelectorAll('.payment-method').forEach(m => {
+                m.classList.remove('selected');
+            });
+            document.querySelectorAll('.payment-details').forEach(detail => {
+                detail.classList.remove('show');
+            });
+            selectedPaymentMethod = null;
+            processPaymentBtn.disabled = true;
+        }
+        
+        function processPayment() {
+            // Generate order number
+            const orderNumber = 'ORD' + Date.now().toString().slice(-8);
+            
+            // Get payment method name
+            const paymentMethodNames = {
+                'dana': 'DANA',
+                'ovo': 'OVO',
+                'gopay': 'GoPay',
+                'bank': 'Transfer Bank (BCA)'
+            };
+            
+            const paymentMethodName = paymentMethodNames[selectedPaymentMethod];
+            
+            // Create success message
+            const successMessage = `
+                <div class="payment-success show">
+                    <div class="success-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <h4>Pembayaran Berhasil!</h4>
+                    <p>Terima kasih atas pesanan Anda.</p>
+                    <div class="mt-3">
+                        <p><strong>No. Pesanan:</strong> ${orderNumber}</p>
+                        <p><strong>Metode Pembayaran:</strong> ${paymentMethodName}</p>
+                        <p><strong>Total:</strong> ${orderTotal.textContent}</p>
+                    </div>
+                    <p class="mt-3">Pesanan Anda akan segera diproses.</p>
+                    <button class="btn btn-primary mt-3" onclick="finishPayment()">Selesai</button>
+                </div>
+            `;
+            
+            // Replace payment modal content with success message
+            document.querySelector('.payment-content').innerHTML = successMessage;
+        }
+        
+        function finishPayment() {
+            // Clear cart
+            cart = [];
+            updateCart();
+            
+            // Hide modal
+            hidePaymentModal();
+            closeCartSidebar();
+            
+            // Reset payment modal content
+            location.reload(); // Simple way to reset the modal content
+        }
+        
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Show temporary success message
+                const originalText = button.textContent;
+                button.textContent = 'Tersalin!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        // Initialize cart
+        updateCart();
+    </script>
+</body>
+
+</html>
